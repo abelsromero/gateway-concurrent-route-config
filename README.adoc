@@ -1,0 +1,63 @@
+= SCG reproducer
+
+== To reproduce
+
+* Start GW instance
+* Run `./scripts/setup.sh && ./scripts/refresh.sh`
+* When completed
+
+
+
+== Manually configuring routes
+
+While monitoring http://localhost:8080/actuator/gateway/routes.
+
+----
+curl -X POST "http://localhost:8080/actuator/gateway/routes" \
+-H 'Content-Type: application/json' \
+-d '[
+  {
+    "id": "test-route-g-01",
+    "uri": "http://go-httpbin",
+    "predicates": [ "Path=/test/**" ],
+    "filters": [ "StripPrefix=1" ],
+    "metadata": { "group": "group-01" }
+  }
+]'
+
+curl -X POST "http://localhost:8080/actuator/gateway/routes" \
+-H 'Content-Type: application/json' \
+-d '[
+  {
+    "id": "test-route-g-02",
+    "uri": "http://go-httpbin",
+    "predicates": [ "Path=/test/**" ],
+    "filters": [ "StripPrefix=1" ],
+    "metadata": { "group": "group-02" }
+  }
+]'
+
+curl -X POST "http://localhost:8080/actuator/gateway/routes" \
+-H 'Content-Type: application/json' \
+-d '[
+  {
+    "id": "test-route-g-03",
+    "uri": "http://go-httpbin",
+    "predicates": [ "Path=/test/**" ],
+    "filters": [ "StripPrefix=1" ],
+    "metadata": { "group": "group-03" }
+  }
+]'
+----
+
+.Refresh all
+----
+curl -X POST "http://localhost:8080/actuator/gateway/refresh"
+----
+
+.Refresh per group
+----
+curl -X POST "http://localhost:8080/actuator/gateway/refresh?metadata=group:group-01" -I &
+curl -X POST "http://localhost:8080/actuator/gateway/refresh?metadata=group:group-02" -I &
+----
+
