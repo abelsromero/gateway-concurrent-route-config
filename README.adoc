@@ -3,8 +3,12 @@
 == To reproduce
 
 * Start GW instance
-* Run `./scripts/setup.sh && ./scripts/refresh.sh`
-* When completed
+
+* Run
+  ./scripts/setup.sh && ./scripts/refresh.sh
+
+* When completed, run
+  ./scripts/count.s
 
 
 
